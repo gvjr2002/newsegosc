@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Start VWO SmartCode --> 
+<script referrerPolicy="no-referrer-when-downgrade" src="https://dev.visualwebsiteoptimizer.com/lib/29000417.js" id="vwoCode"></script> 
+<!-- End VWO SmartCode -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPA Form Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    header {
+      background: #007bff;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input, button {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    nav button {
+      background: #6c757d;
+    }
+
+    nav button.active {
+      background: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My SPA Demo Page</h1>
+  </header>
+
+  <main>
+    <nav>
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="form">Form</button>
+      <button class="nav-btn" data-page="about">About</button>
+    </nav>
+
+    <!-- Home Page -->
+    <section id="home" class="page">
+      <h2>Welcome to the Home Page</h2>
+      <p>This is a simple single-page application example. Use the buttons above to switch between sections without reloading the page.</p>
+    </section>
+
+    <!-- Form Page -->
+    <section id="form" class="page hidden">
+      <h2>Contact Form</h2>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <textarea id="message" placeholder="Your Message" rows="4" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+      <p id="formResponse" style="color: green; text-align: center; margin-top: 1rem;"></p>
+    </section>
+
+    <!-- About Page -->
+    <section id="about" class="page hidden">
+      <h2>About This Demo</h2>
+      <p>This page demonstrates a basic single-page app (SPA) flow using vanilla JavaScript, HTML, and CSS. You can extend it into a full app with routing or API calls.</p>
+    </section>
+  </main>
+
+  <script>
+    // SPA Navigation
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const pages = document.querySelectorAll('.page');
+
+    navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active button
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // Show selected page
+        const targetPage = button.dataset.page;
+        pages.forEach(page => {
+          page.classList.toggle('hidden', page.id !== targetPage);
+        });
+      });
+    });
+
+    // Simple Form Submission
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('formResponse').textContent = "Form submitted successfully!";
+      form.reset();
+    });
+  </script>
+</body>
+</html>
