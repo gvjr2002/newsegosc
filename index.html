@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<!-- Start VWO SmartCode --> 
+  <!-- Start VWO SmartCode --> 
 <script referrerPolicy="no-referrer-when-downgrade" src="https://dev.visualwebsiteoptimizer.com/lib/29000417.js" id="vwoCode"></script> 
 <!-- End VWO SmartCode -->
   <meta charset="UTF-8" />
@@ -47,7 +46,7 @@
       gap: 1rem;
     }
 
-    input, button {
+    input, textarea, button {
       padding: 0.8rem;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -89,7 +88,7 @@
 
   <main>
     <nav>
-      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="home">Home</button>
       <button class="nav-btn" data-page="form">Form</button>
       <button class="nav-btn" data-page="about">About</button>
     </nav>
@@ -115,35 +114,52 @@
     <!-- About Page -->
     <section id="about" class="page hidden">
       <h2>About This Demo</h2>
-      <p>This page demonstrates a basic single-page app (SPA) flow using vanilla JavaScript, HTML, and CSS. You can extend it into a full app with routing or API calls.</p>
+      <p>This page demonstrates a basic single-page app (SPA) flow using vanilla JavaScript, HTML, and CSS — now with browser URL routing.</p>
     </section>
   </main>
 
   <script>
-    // SPA Navigation
     const navButtons = document.querySelectorAll('.nav-btn');
     const pages = document.querySelectorAll('.page');
 
+    // Helper: Show a specific page
+    function showPage(pageId, pushState = true) {
+      // Toggle pages
+      pages.forEach(p => p.classList.toggle('hidden', p.id !== pageId));
+      navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageId));
+
+      // Update the URL without reloading
+      if (pushState) {
+        history.pushState({ page: pageId }, "", "/" + pageId);
+      }
+    }
+
+    // Handle navigation button clicks
     navButtons.forEach(button => {
       button.addEventListener('click', () => {
-        // Update active button
-        navButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-
-        // Show selected page
-        const targetPage = button.dataset.page;
-        pages.forEach(page => {
-          page.classList.toggle('hidden', page.id !== targetPage);
-        });
+        const page = button.dataset.page;
+        showPage(page);
       });
     });
 
-    // Simple Form Submission
+    // Handle form submission
     const form = document.getElementById('contactForm');
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
       document.getElementById('formResponse').textContent = "Form submitted successfully!";
       form.reset();
+    });
+
+    // Handle browser back/forward navigation
+    window.addEventListener('popstate', e => {
+      const page = e.state?.page || location.pathname.replace("/", "") || "home";
+      showPage(page, false);
+    });
+
+    // Initialize correct page based on URL
+    window.addEventListener('DOMContentLoaded', () => {
+      const path = location.pathname.replace("/", "") || "home";
+      showPage(path, false);
     });
   </script>
 </body>
